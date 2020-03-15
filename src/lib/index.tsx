@@ -1,2 +1,2 @@
-export { createSvs } from "./createSvs";
+export { createSvs, NOT_FOUND } from "./createSvs";
 export { useScope } from "./Scope";

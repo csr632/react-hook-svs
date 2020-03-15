@@ -26,16 +26,14 @@ const SumSvs = createSvs((scope, initVal) => {
 });
 
 export default () => {
-  /**
-const [output, scope] = Svs.useProvideNewScope()
-   * is a shorthand of:
-const scope = useScope()
-const output = scope.useProvideSvs(Svs)
-   */
+  // Service composition is achieved by running two services in same scope. So the latter ones can consume the output of the former ones.
   const [{ step, increment }, scope] = StepSvs.useProvideNewScope(1);
   const { sum, add } = scope.useProvideSvs(SumSvs, 0);
-  // inject these services into this subtree at once.
-  // no provider hell like this:
+  // If you do this, they can not interact:
+  // SumSvs.useProvideNewScope(0);
+
+  // Inject two services Provider in scope at once.
+  // Instead of writing provider hell like this:
   // <Provider1><Provider2>children</Provider2></Provider1>
   return scope.injectTo(
     <div>

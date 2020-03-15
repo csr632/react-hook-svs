@@ -4,10 +4,17 @@ import { IScope, Wrapper, useScope } from "./Scope";
 export const NOT_FOUND = "__nθt_found__" as const;
 
 export interface ISvs<Input extends any[], Output> {
-  // function overload
+  /**
+   * Shorthand for `const scope = useScope(); const output = scope.useProvideSvs(svs, ...input);`
+   */
+  useProvideNewScope(...input: Input): readonly [Output, IScope];
+  /**
+   * Find nearest service output from ancestor components.
+   * When optional==true, return NOT_FOUND when service not found.
+   * Otherwise, throw error when service not found.
+   */
   useCtxConsume(): Output;
   useCtxConsume(optional: boolean): Output | typeof NOT_FOUND;
-  useProvideNewScope(...input: Input): readonly [Output, IScope]
 }
 
 export interface ISvsInternal<Input extends any[], Output>
@@ -31,8 +38,7 @@ export function createSvs<Input extends any[], Output>(
   return svs;
 
   function __useRun(scope: IScope, ...input: Input) {
-    // the hooks inside 'useHooks' shouldn't affect current scope
-    const output = useHook(scope.createChild(), ...input);
+    const output = useHook(scope, ...input);
     const wrapper: Wrapper = (children?: React.ReactNode) => {
       return <ctx.Provider value={output}>{children}</ctx.Provider>;
     };
@@ -40,16 +46,14 @@ export function createSvs<Input extends any[], Output>(
   }
 
   function useProvideNewScope(...input: Input) {
-    const scope = useScope()
+    const scope = useScope();
     const output = scope.useProvideSvs(svs, ...input);
-    return [output, scope] as const
+    return [output, scope] as const;
   }
 
   function useCtxConsume(): Output;
   function useCtxConsume(optional: boolean): Output | typeof NOT_FOUND;
-  function useCtxConsume(
-    optional?: boolean
-  ) {
+  function useCtxConsume(optional?: boolean) {
     const ctxVal = useContext(ctx);
     if (ctxVal !== NOT_FOUND) return ctxVal;
     if (optional) return NOT_FOUND;
