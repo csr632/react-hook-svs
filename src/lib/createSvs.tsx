@@ -1,21 +1,19 @@
 import React, { useContext } from "react";
-import { IScope, ScopeInternal, useScope } from "./Scope";
+import { IScope, Wrapper, useScope } from "./Scope";
 
 export const NOT_FOUND = "__nθt_found__" as const;
 
 export interface ISvs<Input extends any[], Output> {
-  useProvideNewScope: (...input: Input) => [Output, IScope];
-  useProvide: (scope: IScope, ...input: Input) => Output;
   // function overload
-  useConsume(): Output;
-  useConsume(optional: boolean): Output | typeof NOT_FOUND;
-  useConsume(scope: IScope): Output;
-  useConsume(scope: IScope, optional: boolean): Output | typeof NOT_FOUND;
+  useCtxConsume(): Output;
+  useCtxConsume(optional: boolean): Output | typeof NOT_FOUND;
+  useProvideNewScope(...input: Input): readonly [Output, IScope]
 }
 
 export interface ISvsInternal<Input extends any[], Output>
   extends ISvs<Input, Output> {
   __ctx: React.Context<Output | typeof NOT_FOUND>;
+  __useRun: (scope: IScope, ...input: Input) => readonly [Output, Wrapper];
 }
 
 export function createSvs<Input extends any[], Output>(
@@ -24,55 +22,37 @@ export function createSvs<Input extends any[], Output>(
   const ctx = React.createContext<Output | typeof NOT_FOUND>(NOT_FOUND);
 
   const svs: ISvsInternal<Input, Output> = {
+    useCtxConsume,
     useProvideNewScope,
-    useProvide,
-    useConsume,
+    __useRun,
     __ctx: ctx
   };
 
   return svs;
 
-  function useProvide(scope: IScope, ...input: Input) {
-    const output = useHook(scope.createChild(), ...input);
-    // only output are put in current scope
-    // the hooks in 'useHooks' don't affect current scope
-    // becaue we make useHooks run in a child scope
-    (scope as ScopeInternal).provide(svs, output);
-    return output;
+  function __useRun(scope: IScope, ...input: Input) {
+    const output = useHook(scope, ...input);
+    const wrapper: Wrapper = (children?: React.ReactNode) => {
+      return <ctx.Provider value={output}>{children}</ctx.Provider>;
+    };
+    return [output, wrapper] as const;
   }
 
-  function useProvideNewScope(...input: Input): [Output, IScope] {
-    const scope = useScope();
-    const output = useProvide(scope, ...input);
-    return [output, scope];
+  function useProvideNewScope(...input: Input) {
+    const scope = useScope()
+    const output = scope.useProvideSvs(svs, ...input);
+    return [output, scope] as const
   }
 
-  function useConsume(): Output;
-  function useConsume(optional: boolean): Output | typeof NOT_FOUND;
-  function useConsume(scope: IScope): Output;
-  function useConsume(
-    scope: IScope,
-    optional: boolean
-  ): Output | typeof NOT_FOUND;
-  function useConsume(
-    scopeOrOptional?: IScope | boolean | undefined,
-    _optional?: boolean
+  function useCtxConsume(): Output;
+  function useCtxConsume(optional: boolean): Output | typeof NOT_FOUND;
+  function useCtxConsume(
+    optional?: boolean
   ) {
-    const [scope, optional] = (() => {
-      if (typeof scopeOrOptional === "object" && scopeOrOptional !== null) {
-        return [scopeOrOptional, !!_optional] as [IScope, boolean];
-      }
-      return [null, !!scopeOrOptional] as [null, boolean];
-    })();
     const ctxVal = useContext(ctx);
-    // This find can be optimised
-    // based on the fact that
-    // hooks are are called with the same order in every render
-    const scopeVal = scope ? (scope as ScopeInternal).find(svs) : NOT_FOUND;
-    if (scopeVal !== NOT_FOUND) return scopeVal;
     if (ctxVal !== NOT_FOUND) return ctxVal;
     if (optional) return NOT_FOUND;
-    throw new Error(`There is no provider above the useConsumer.
-      Did you forget to call useProvider or its wrapper?`);
+    throw new Error(`This service is not available in react context.
+      You should provide it in ancester component.`);
   }
 }

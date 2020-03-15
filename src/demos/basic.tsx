@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import { createSvs } from "../lib";
 
-// 声明状态容器、状态更新逻辑
-const CounterSvs = createSvs((scope, initial = 0) => {
+// Services often declare state and state-updating routines
+const CounterSvs = createSvs((scope, initial) => {
   const [count, setCount] = useState(initial);
-  let decrement = () => setCount(count - 1);
-  let increment = () => setCount(count + 1);
+  const decrement = () => setCount(count - 1);
+  const increment = () => setCount(count + 1);
   return { count, decrement, increment };
 });
 
-export default function App() {
-  // 将一个组件作为宿主，实例化状态仓储
-  // 宿主本身也可以读取状态、更新状态
+export default () => {
+  // Make App be the host of CounterSvs.
+  // You can get the service output immediately in hosting component,
+  // without need to wrap App in a HOC.
   const [{ count, increment }, scope] = CounterSvs.useProvideNewScope(10);
+  // scope.injectTo make the service output available in this subtree
   return scope.injectTo(
     <div className="App">
       <p>
@@ -24,11 +26,11 @@ export default function App() {
       </div>
     </div>
   );
-}
+};
 
 function CounterDisplay() {
-  // 获取状态、状态更新方法
-  let { count, decrement, increment } = CounterSvs.useConsume();
+  // find CounterSvs from react context
+  const { count, decrement, increment } = CounterSvs.useCtxConsume();
   return (
     <div>
       <button onClick={decrement}>-</button>
