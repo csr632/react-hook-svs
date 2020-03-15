@@ -1,8 +1,8 @@
 {
-  "name": "codesandbox-workspace",
+  "name": "react-hook-svs",
   "private": true,
   "version": "1.0.0",
-  "description": "This folder can be opened by codesandbox: https://codesandbox.io/s/github/csr632/react-hook-svs/tree/master/src",
+  "description": "",
   "main": "demos/basic.tsx",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,5 +15,6 @@
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "typescript": "^3.8.3"
-  }
+  },
+  "keywords": []
 }
