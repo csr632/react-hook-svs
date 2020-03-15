@@ -2,11 +2,8 @@
   "name": "react-hook-svs",
   "private": true,
   "version": "1.0.0",
-  "description": "",
+  "description": "https://codesandbox.io/s/react-hook-svs-9yzsh?fontsize=14&hidenavigation=1&moduleview=1&theme=dark",
   "main": "demos/basic.tsx",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "",
   "license": "ISC",
   "dependencies": {
