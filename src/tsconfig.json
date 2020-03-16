@@ -7,7 +7,7 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "outDir": "./lib",
+    "outDir": "../out",
     "strict": true,
     "moduleResolution": "node",
     "esModuleInterop": true,

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createSvs } from "../lib";
+import { createSvs, useScope } from "../lib";
 
 const StepSvs = createSvs((scope, initVal) => {
   const [step, setStep] = useState(initVal);
@@ -50,7 +50,10 @@ export default () => {
 
 const Child: React.FC = () => {
   const { step, increment } = StepSvs.useCtxConsume();
-  const { sum, add } = SumSvs.useCtxConsume();
+  // If requested service is not in the scope,
+  // it will fallback to react context.
+  const emptyScope = useScope();
+  const { sum, add } = emptyScope.useConsumeSvs(SumSvs);
   return (
     <div>
       Access services in child component:
