@@ -65,11 +65,14 @@ function CounterDisplay() {
 
 [![Edit react-hook-svs](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/csr632/react-hook-svs/tree/master/src?fontsize=14&hidenavigation=1&moduleview=1&theme=dark)
 
-## Key ideas and demos
+## Basic features
 
 - Typescript first. Get full power of intellisense and type-checking. No string-based action type dispatch like redux. Let type system do most works for you.
 - By taking take full advantage of react hooks, you can get better logic reuse & code organization. You can benefit from all the awesome hook libraries from react community.
 - Easy to learn. We embrace the mind model of React and hooks, with only two new concept(Service and Scope). The library source code is **only 100 lines of code**, and many of them are just Typescript type notation.
+
+## Key ideas and demos
+
 - Get service output immediately in the hosting component. You **no longer need to wrap your top component with provider HOC** to get service output in it.
   - Formerly(without `react-hook-svs`), if you want to get service output in the top component, you have to lift the service up: wrap your top component with provider HOC, then use `useContext(ServiceCtx)` in your top component to get the service output. But with `react-hook-svs`, you just run the service in the hosting component, and the output will be returned(just like normal hooks).
   - This is one of the major advantages compared with [unstated-next](https://github.com/jamiebuilds/unstated-next). This helps you to reduce boilerplate code.
