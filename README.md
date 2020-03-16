@@ -9,11 +9,17 @@ What I mean by state management(or data layer, or data model):
   - This practice makes your data model well-encapsulated, and lead to better code reuse and less bugs.
 - The descendant components(consumers) can read the shared state. When the shared state is updated, consumers should re-render. This is called reactive.
 
-## basic demo
+## Installation
+
+```sh
+npm install -S react-hook-svs
+```
+
+## Basic demo
 
 ```tsx
 import React, { useState } from "react";
-import { createSvs } from "../lib";
+import { createSvs } from "react-hook-svs";
 
 // Services often declare state and state-updating routines
 const CounterSvs = createSvs((scope, initial) => {
