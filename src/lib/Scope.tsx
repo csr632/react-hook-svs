@@ -120,6 +120,11 @@ export class ScopeInternal implements IScope {
   }
 
   get injectTo() {
+    if (this.parent) {
+      throw new Error(
+        `You should avoid injecting a child scope. It will make things difficult.`
+      );
+    }
     return this._wrapper;
   }
 }

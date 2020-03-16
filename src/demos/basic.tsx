@@ -12,7 +12,8 @@ const CounterSvs = createSvs((scope, initial) => {
 export default function App() {
   /**
    * Make App component be the host of CounterSvs.
-   * You can get the service output immediately in the hosting component, without need to wrap App in a HOC.
+   * You can get the service output immediately in the hosting component,
+   * without need to wrap it in a HOC.
    */
   const [{ count, increment }, scope] = CounterSvs.useProvideNewScope(10);
   // scope.injectTo make the service output available in this subtree

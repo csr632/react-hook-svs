@@ -26,7 +26,8 @@ const CounterSvs = createSvs((scope, initial) => {
 export default function App() {
   /**
    * Make App component be the host of CounterSvs.
-   * You can get the service output immediately in the hosting component, without need to wrap App in a HOC.
+   * You can get the service output immediately in the hosting component,
+   * without need to wrap it in a HOC.
    */
   const [{ count, increment }, scope] = CounterSvs.useProvideNewScope(10);
   // scope.injectTo make the service output available in this subtree
@@ -74,11 +75,11 @@ function CounterDisplay() {
     - Traditionally(without `react-hook-svs`), we use React context to achieve service composition:`<Provider1> <Provider2> <Provider3> <App /> </Provider3> </Provider2> </Provider1>` (the inner ones can depend on the outer ones). If you get a lot of providers, you will end up in [provider hell](https://github.com/jamiebuilds/unstated-next/issues/35). But with `react-hook-svs`, you can achieve exactly the same with **chaining**(the latter ones can depend on the former ones).
   - This is one of the major advantages compared with [unstated-next](https://github.com/jamiebuilds/unstated-next). This will make your services more composable and your JSX tree cleaner.
   - [See this demo](https://codesandbox.io/s/github/csr632/react-hook-svs/tree/master/src?fontsize=14&hidenavigation=1&module=%2Fdemos%2Fcomposition.tsx&moduleview=1&theme=dark).
-- Service abstraction.
+- **Service abstraction**.
   - Normal React hooks abstraction: the caller of a hook can't know whether the hook call other hooks in it. The nesting hook call is abstracted by the parent hook.
   - Beside normal React hooks abstraction, `react-hook-svs` gives you service abstraction: SvsA can run(instead of consume) SvsB inside it, but the user of SvsA will not feel the existance of SvsB: SvsB will not be visible in the scope and react context. SvsA can re-export and re-name the output of SvsB to make it visible.
   - [See this demo](https://codesandbox.io/s/github/csr632/react-hook-svs/tree/master/src?fontsize=14&hidenavigation=1&module=%2Fdemos%2Fabstraction.tsx&moduleview=1&theme=dark).
-- Precise control of service visibility. You can make a scope(which contains some services' output) only visible to a portion of children. You can make two children consume same kind of service, but two independent outputs.
+- **Precise control of service visibility**. You can make a scope(which contains some services' output) only visible to a portion of children. You can make two children consume same kind of service, but two independent outputs.
   - [unstated-next](https://github.com/jamiebuilds/unstated-next) can not do that while still consuming the service output in the host component.
   - [See this demo](https://codesandbox.io/s/github/csr632/react-hook-svs/tree/master/src?fontsize=14&hidenavigation=1&module=%2Fdemos%2Findependent-run.tsx&moduleview=1&theme=dark).
 
