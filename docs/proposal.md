@@ -6,8 +6,9 @@
 
 Currently, hooks cannot provide a context. And hooks cannot consume sibling hook with context.
 The only way to communicate between sibling hooks are "hookA return value -> hookB parameter". But that require us to broaden API of hookB and make it less reusable.
-**We are forced to lift things up to make it consumable by `useContext`**, which often lead to "nested HOCs" or "provider hell".
-What's worse, this make hooks less composable. There should be a **consistent way** to commuicate with between components/hooks:
+So we are forced to lift things up to make it consumable by `useContext`, which often lead to "nested HOCs" or "provider hell". What's worse, this make hooks less composable.
+
+There should be a **consistent way** to commuicate with between components/hooks:
 
 - components/hooks consume ancestor components' providing value. (context already achieve that)
 - hooks consume current component's providing value.
@@ -22,11 +23,19 @@ I don't think this will introduce more coupling in user code, because current co
 
 ## Proposal
 
-Introduce a scope object:
+My basic idea is introduce a scope object:
 
 - hooks/components can add context provider to a scope object
 - hooks/components can consume context provider from scope
 - inject all the context provider into JSX tree at once.
+
+hooks can be isolated or consumable, depending on whether they are in same scope family. When you run a hooks in a scope, react will create a **child scope** to be the running enviroment of that hook. The "parent scope - child scope" structure will form a **"enviroment tree"** to resolve context requests properly. It just works like enviroment model of most programing languages.
+
+I already implement a [small library](https://github.com/csr632/react-hook-svs)(100 lines of code, not include comments) to do this(you can read more from its documentation). But I don't think the API can be adopt by react directly.
+
+I am not sure what API should be provided by react now, and I have to go to sleep...
+
+I want to hear your feadback for my motivation. I will come back and update this proposal this week.
 
 ```tsx
 const ctx1 = React.createContext();
