@@ -19,7 +19,7 @@ Most of the above communication can not be achieved by context currently.
 
 What I mean by "consistent way": if a hook do `const val = useBetterContext(Context)`, the value can come from ancestor component, or current component, or former sibling hook, or ancestor hook. But the hook can't tell which it come from(and it don't care). This kind of context communication will make hooks more composable.
 
-I don't think this will introduce more coupling in user code, because current context is already doing remote communication. But current context is not doing it thoroughly. **I hope remote communication can be done thoroughly and consistently.**
+I don't think this will introduce more coupling in user code, because current context is already doing remote communication. But current context is not doing it thoroughly. The tree of hooks is just like the tree of components. So why don't we provide a consistent way for both? **I hope remote communication can be done thoroughly and consistently.**
 
 ## Proposal
 

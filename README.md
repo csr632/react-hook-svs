@@ -4,7 +4,7 @@ Implement shared services using React hooks. Organize your data layer clearly an
 
 What I mean by state management(or data layer, or data model):
 
-- You can declare a state store to host shared state. This store lives somewhere in the component tree and can be accessed by its descendants.
+- You can declare a state store to host shared state. The data structure should form a tree structure that reflect the structure of the application.
 - The state store should contain some routines(functions) to update the state. The update routines can be sync or async. Consumer should trigger data update by calling the routines, instead of set data fields by hand.
   - This practice makes your data model well-encapsulated, and lead to better code reuse and less bugs.
 - The descendant components(consumers) can read the shared state. When the shared state is updated, consumers should re-render. This is called reactive.
