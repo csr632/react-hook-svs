@@ -74,7 +74,7 @@ function CounterDisplay() {
 ## Key ideas and demos
 
 - Get service output immediately in the hosting component. You **no longer need to wrap your top component with provider HOC** to get service output in it.
-  - Formerly(without `react-hook-svs`), if you want to get service output in the top component, you have to lift the service up: wrap your top component with provider HOC, then use `useContext(ServiceCtx)` in your top component to get the service output. But with `react-hook-svs`, you just run the service in the hosting component, and the output will be returned(just like normal hooks).
+  - Formerly(without `react-hook-svs`), if you want to get service output in the top component, you are forced to lift the service up: wrap your top component with provider HOC, then use `useContext(ServiceCtx)` in your top component to get the service output. But with `react-hook-svs`, you just run the service in the hosting component, and the output is returned immediately(just like normal hooks).
   - This is one of the major advantages compared with [unstated-next](https://github.com/jamiebuilds/unstated-next). This helps you to reduce boilerplate code.
   - [The basic demo](https://codesandbox.io/s/github/csr632/react-hook-svs/tree/master/src?fontsize=14&hidenavigation=1&moduleview=1&theme=dark) illustrates that.
 - Besides composing with normal React hooks, `react-hook-svs` give you even more composability: **service composition**. **Service composition is achieved by running two services in same scope. So the latter ones can consume the former ones.** Service composition give you following benefits:
@@ -86,7 +86,7 @@ function CounterDisplay() {
   - [See this demo](https://codesandbox.io/s/github/csr632/react-hook-svs/tree/master/src?fontsize=14&hidenavigation=1&module=%2Fdemos%2Fcomposition.tsx&moduleview=1&theme=dark).
   - Sidenote: Services can be isolated or composable, depending on whether they are in same scope family. When you run a hooks in a scope, `react-hook-svs` will create a child scope to be the running enviroment of that hook. The "parent scope - child scope" structure will form a "enviroment tree" to resolve context requests properly. It just works like enviroment model of most programing languages.
 - **Service abstraction**.
-  - Normal React hooks abstraction: the caller of a hook can't know whether the hook call other hooks in it. The nesting hook call is abstracted by the parent hook.
+  - Normal React hooks abstraction: the caller of a hook can't know whether the hook call other hooks in it. The nesting hook call is abstracted away by the parent hook.
   - Beside normal React hooks abstraction, `react-hook-svs` gives you service abstraction: SvsA can run(instead of consume) SvsB inside it, but the users of SvsA will not feel the existance of SvsB: **SvsB will not be visible in the scope and react context. SvsA can re-export and re-name the output of SvsB to make it visible**.
   - [See this demo](https://codesandbox.io/s/github/csr632/react-hook-svs/tree/master/src?fontsize=14&hidenavigation=1&module=%2Fdemos%2Fabstraction.tsx&moduleview=1&theme=dark).
 - **Precise control of service visibility**. You can make a scope(which contains some services' output) only visible to a portion of children. You can make two children consume same kind of service, but two independent outputs.
@@ -96,6 +96,8 @@ function CounterDisplay() {
 ## APIs
 
 ### Service
+
+A service is a special hook, whose output are shared through React context. It is just like the "container" in [unstated-next](https://github.com/jamiebuilds/unstated-next), and "data model" in other state management library.
 
 #### createSvs
 
@@ -126,6 +128,10 @@ interface ISvs<Input extends any[], Output> {
 ```
 
 ### Scope
+
+Any service must be run in a "scope object". A service can access other services that is run in the same "scope". Services that is hosted in ancestor components are always accessable.
+
+Scope object will collect all the context providers of its services, and inject into a JSX at once, saving you from provider hell!
 
 #### useScope
 
