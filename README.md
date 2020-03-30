@@ -84,7 +84,7 @@ function CounterDisplay() {
     - Traditionally(without `react-hook-svs`), we use React context to achieve service composition:`<Provider1> <Provider2> <Provider3> <App /> </Provider3> </Provider2> </Provider1>` (the inner ones can depend on the outer ones). If you get a lot of providers, you will end up in [provider hell](https://github.com/jamiebuilds/unstated-next/issues/35). But with `react-hook-svs`, you can achieve exactly the same with **chaining**(the latter ones can depend on the former ones).
   - This is one of the major advantages compared with [unstated-next](https://github.com/jamiebuilds/unstated-next). This will make your services more composable and your JSX tree cleaner.
   - [See this demo](https://codesandbox.io/s/github/csr632/react-hook-svs/tree/master/src?fontsize=14&hidenavigation=1&module=%2Fdemos%2Fcomposition.tsx&moduleview=1&theme=dark).
-  - Sidenote: Services can be isolated or composable, depending on whether they are in same scope family. When you run a hooks in a scope, `react-hook-svs` will create a child scope to be the running enviroment of that hook. The "parent scope - child scope" structure will form a "enviroment tree" to resolve context requests properly. It just works like enviroment model of most programing languages.
+  - Sidenote: Services can be isolated or composable, depending on whether they are in same scope family. When you run a hooks in a scope, `react-hook-svs` will create a child scope to be the running enviroment of that hook. The "parent scope - child scope" structure will form a "enviroment tree" to resolve service requests properly. It just works like enviroment model of most programing languages.
 - **Service abstraction**.
   - Normal React hooks abstraction: the caller of a hook can't know whether the hook call other hooks in it. The nesting hook call is abstracted away by the parent hook.
   - Beside normal React hooks abstraction, `react-hook-svs` gives you service abstraction: SvsA can run(instead of consume) SvsB inside it, but the users of SvsA will not feel the existance of SvsB: **SvsB will not be visible in the scope and react context. SvsA can re-export and re-name the output of SvsB to make it visible**.
@@ -97,7 +97,7 @@ function CounterDisplay() {
 
 ### Service
 
-A service is a special hook, whose output are shared through React context. It is just like the "container" in [unstated-next](https://github.com/jamiebuilds/unstated-next), and "data model" in other state management library.
+A service is a special hook, whose output are shared through scope object and React context. It is just like the "container" in [unstated-next](https://github.com/jamiebuilds/unstated-next), and "data model" in other state management library.
 
 #### createSvs
 
@@ -129,7 +129,7 @@ interface ISvs<Input extends any[], Output> {
 
 ### Scope
 
-Any service must be run in a "scope object". A service can access other services that is run in the same "scope". Services that is hosted in ancestor components are always accessable.
+Any service must be run in a "scope object". A service can access other services that is run in the same "scope". (A service can also access other services from React context.)
 
 Scope object will collect all the context providers of its services, and inject into a JSX at once, saving you from provider hell!
 
@@ -150,6 +150,9 @@ interface IScope {
    * Run the service in the **child scope**.
    * Put the service output in **this scope**.
    * The output will be visible by following services in this scope and the component subtree wrapped by `injectTo`.
+   *
+   * The "parent scope - child scope" structure will form a "enviroment tree" to resolve context requests properly.
+   * It just works like enviroment model of most programing languages.
    */
   useProvideSvs<Input extends any[], Output>(
     svs: ISvs<Input, Output>,
@@ -165,7 +168,7 @@ interface IScope {
     ...input: Input
   ): Output;
   /**
-   * Find a service output from this scope, or its ancestor scope, and React context.
+   * Find a service output from this scope, or its ancestor scope, or React context.
    */
   useConsumeSvs<Input extends any[], Output>(svs: ISvs<Input, Output>): Output;
   useConsumeSvs<Input extends any[], Output>(
