@@ -9,6 +9,9 @@ export interface IScope {
    * Run the service in the **child scope**.
    * Put the service output in **this scope**.
    * The output will be visible by following services in this scope and the component subtree wrapped by `injectTo`.
+   *
+   * The "parent scope - child scope" structure will form a "enviroment tree" to resolve context requests properly.
+   * It just works like enviroment model of most programing languages.
    */
   useProvideSvs<Input extends any[], Output>(
     svs: ISvs<Input, Output>,
@@ -24,7 +27,7 @@ export interface IScope {
     ...input: Input
   ): Output;
   /**
-   * Find a service output from this scope, or its ancestor scope, and React context.
+   * Find a service output from this scope, or its ancestor scope, or React context.
    */
   useConsumeSvs<Input extends any[], Output>(svs: ISvs<Input, Output>): Output;
   useConsumeSvs<Input extends any[], Output>(

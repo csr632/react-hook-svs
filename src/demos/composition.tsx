@@ -29,12 +29,18 @@ export default () => {
   // Service composition is achieved by running two services in same scope. So the latter ones can consume the output of the former ones.
   const [{ step, increment }, scope] = StepSvs.useProvideNewScope(1);
   const { sum, add } = scope.useProvideSvs(SumSvs, 0);
-  // If you do this, they can not interact:
+  // If you do this, they are isolated and can not interact with each other.
+  // Because they are in different scope:
   // SumSvs.useProvideNewScope(0);
 
-  // Inject two services Provider in scope at once.
+  // Inject two service Providers at once.
   // Instead of writing provider hell like this:
-  // <Provider1><Provider2>children</Provider2></Provider1>
+  // <Provider1>
+  //   <Provider2>
+  //     ...more nested providers 
+  //     children
+  //   </Provider2>
+  // </Provider1>
   return scope.injectTo(
     <div>
       <p>
