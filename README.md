@@ -6,7 +6,7 @@ What I mean by state management(or data layer, or data model):
 
 - You can declare several state stores to host shared states. You can also use a single BIG store to host all your states. Anyway, it is recommended to make your states to form a tree structure that reflect the structure of your application.
 - The state store should contain some routines(functions) to update the states. The update routines can be sync or async. Consumer should trigger data update by calling these routines, instead of set data fields by hand.
-  - This practice makes your data model well-encapsulated, and lead to better code reuse and less bugs.
+  - This practice makes your data model well-encapsulated, leading to better code reuse and less bugs.
 - The descendant components(consumers) can read the shared state. When the shared state is updated, consumers should automatically re-render. This is called reactive.
 
 ## Installation
@@ -84,10 +84,10 @@ function CounterDisplay() {
     - Traditionally(without `react-hook-svs`), we use React context to achieve service composition:`<Provider1> <Provider2> <Provider3> <App /> </Provider3> </Provider2> </Provider1>` (the inner ones can depend on the outer ones). If you get a lot of providers, you will end up in [provider hell](https://github.com/jamiebuilds/unstated-next/issues/35). But with `react-hook-svs`, you can achieve exactly the same with **chaining**(the latter ones can depend on the former ones).
   - This is one of the major advantages compared with [unstated-next](https://github.com/jamiebuilds/unstated-next). This will make your services more composable and your JSX tree cleaner.
   - [See this demo](https://codesandbox.io/s/github/csr632/react-hook-svs/tree/master/src?fontsize=14&hidenavigation=1&module=%2Fdemos%2Fcomposition.tsx&moduleview=1&theme=dark).
-  - Sidenote: Services can be isolated or composable, depending on whether they are in same scope family. When you run a hooks in a scope, `react-hook-svs` will create a child scope to be the running enviroment of that hook. The "parent scope - child scope" structure will form a "enviroment tree" to resolve service requests properly. It just works like enviroment model of most programing languages.
+  - Sidenote: Services can be either isolated or accessible, depending on whether they are in same scope family. When you run a service inside a scope, `react-hook-svs` will create a child scope to be the running enviroment of that service. The "parent scope - child scope" structure will form a "enviroment tree" to resolve/isolate services properly. It just works like enviroment model of most programing languages.
 - **Service abstraction**.
   - Normal React hooks abstraction: the caller of a hook can't know whether the hook call other hooks in it. The nesting hook call is abstracted away by the parent hook.
-  - Beside normal React hooks abstraction, `react-hook-svs` gives you service abstraction: SvsA can run(instead of consume) SvsB inside it, but the users of SvsA will not feel the existance of SvsB: **SvsB will not be visible in the scope and react context. SvsA can re-export and re-name the output of SvsB to make it visible**.
+  - Beside normal React hooks abstraction, `react-hook-svs` gives you service abstraction: SvsA can run(instead of consume) SvsB inside it, but the users of SvsA will not feel the existance of SvsB: **SvsB will not be visible in the scope and React context. SvsA can choose to re-export and re-name the output of SvsB to make it visible**. This is similar to how nested esModules or nested function calls work.
   - [See this demo](https://codesandbox.io/s/github/csr632/react-hook-svs/tree/master/src?fontsize=14&hidenavigation=1&module=%2Fdemos%2Fabstraction.tsx&moduleview=1&theme=dark).
 - **Precise control of service visibility**. You can make a scope(which contains some services' output) only visible to a portion of children. You can make two children consume same kind of service, but two independent outputs.
   - [unstated-next](https://github.com/jamiebuilds/unstated-next) can not do that because you need to wrap you component with HOC to consume the service output. The HOC service will be visible to all its children.
