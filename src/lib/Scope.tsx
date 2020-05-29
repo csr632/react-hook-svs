@@ -50,7 +50,7 @@ export interface IScope {
 export class ScopeInternal implements IScope {
   private readonly parent: ScopeInternal | undefined;
   private readonly loaded: Map<ISvs<any, any>, any> = new Map();
-  private _wrapper: Wrapper = c => c;
+  private _wrapper: Wrapper = (c) => c;
 
   constructor(parent?: ScopeInternal) {
     this.parent = parent;
@@ -84,7 +84,7 @@ export class ScopeInternal implements IScope {
   ): Output {
     const [output, wrapper] = this._useRunSvs(svs, ...input);
     const oldWrapper = this._wrapper;
-    this._wrapper = c => oldWrapper(wrapper(c));
+    this._wrapper = (c) => oldWrapper(wrapper(c));
     this.loaded.set(svs, output);
     return output;
   }

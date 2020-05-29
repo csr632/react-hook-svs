@@ -15,7 +15,7 @@ export default function App() {
    * You can get the service output immediately in the hosting component,
    * without need to wrap it in a HOC.
    */
-  const [{ count, increment }, scope] = CounterSvs.useProvideNewScope(10);
+  const [scope, { count, increment }] = CounterSvs.useProvideNewScope(10);
   // scope.injectTo make the service output available in this subtree
   return scope.injectTo(
     <div className="App">

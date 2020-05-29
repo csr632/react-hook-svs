@@ -7,7 +7,7 @@ export interface ISvs<Input extends any[], Output> {
   /**
    * Shorthand for `const scope = useScope(); const output = scope.useProvideSvs(svs, ...input);`
    */
-  useProvideNewScope(...input: Input): readonly [Output, IScope];
+  useProvideNewScope(...input: Input): readonly [IScope, Output];
   /**
    * Find nearest service output from ancestor components.
    * When optional==true, return NOT_FOUND when service not found.
@@ -32,7 +32,7 @@ export function createSvs<Input extends any[], Output>(
     useCtxConsume,
     useProvideNewScope,
     __useRun,
-    __ctx: ctx
+    __ctx: ctx,
   };
 
   return svs;
@@ -48,7 +48,7 @@ export function createSvs<Input extends any[], Output>(
   function useProvideNewScope(...input: Input) {
     const scope = useScope();
     const output = scope.useProvideSvs(svs, ...input);
-    return [output, scope] as const;
+    return [scope, output] as const;
   }
 
   function useCtxConsume(): Output;
