@@ -1,16 +1,16 @@
 {
   "name": "react-hook-svs",
   "private": true,
-  "description": "https://codesandbox.io/s/react-hook-svs-9yzsh?fontsize=14&hidenavigation=1&moduleview=1&theme=dark",
+  "description": "Implement shared services using React hooks. Organize your data layer clearly and concisely.",
   "main": "demos/basic.tsx",
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/react": "^16.9.23",
-    "@types/react-dom": "^16.9.5",
-    "react": "^16.13.0",
-    "react-dom": "^16.13.0",
-    "typescript": "^3.8.3"
+    "@types/react": "^16.9.35",
+    "@types/react-dom": "^16.9.8",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "typescript": "^3.9.3"
   },
   "keywords": []
 }

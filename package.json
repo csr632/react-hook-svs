@@ -1,7 +1,7 @@
 {
   "name": "react-hook-svs",
   "version": "2.0.0",
-  "description": "",
+  "description": "Implement shared services using React hooks. Organize your data layer clearly and concisely.",
   "main": "out/index.js",
   "scripts": {
     "prepare": "rm -rf ./out && tsc -p ./src/lib"
@@ -9,7 +9,12 @@
   "publishConfig": {
     "access": "public"
   },
-  "author": "",
+  "homepage": "https://github.com/csr632/react-hook-svs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/csr632/react-hook-svs"
+  },
+  "author": "csr632",
   "license": "ISC",
   "devDependencies": {
     "@types/react": "^16.9.35",
