@@ -8,7 +8,7 @@ const CounterSvs = createSvs((scope, initial) => {
   return { count, decrement, increment };
 });
 
-export default () => {
+export default function Demo() {
   /**
 const [scope, output] = Svs.useProvideNewScope()
    * is a shorthand for:
@@ -32,7 +32,7 @@ const output = scope.useProvideSvs(Svs)
       {scope2.injectTo(<OperationButtons />)}
     </div>
   );
-};
+}
 
 function OperationButtons() {
   const { increment, decrement } = CounterSvs.useCtxConsume();

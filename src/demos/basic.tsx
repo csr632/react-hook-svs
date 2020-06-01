@@ -9,7 +9,7 @@ const CounterSvs = createSvs((scope, initial) => {
   return { count, decrement, increment };
 });
 
-export default function App() {
+export default function Demo() {
   /**
    * Make App component be the host of CounterSvs.
    * You can get the service output immediately in the hosting component,
@@ -18,7 +18,7 @@ export default function App() {
   const [scope, { count, increment }] = CounterSvs.useProvideNewScope(10);
   // scope.injectTo make the service output available in this subtree
   return scope.injectTo(
-    <div className="App">
+    <div>
       <p>
         Use count in Host: {count} <button onClick={increment}>+</button>
       </p>

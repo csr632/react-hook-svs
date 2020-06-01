@@ -4,7 +4,10 @@
   "description": "Implement shared services using React hooks. Organize your data layer clearly and concisely.",
   "main": "out/index.js",
   "scripts": {
-    "prepare": "rm -rf ./out && tsc -p ./src/lib"
+    "prepare": "rm -rf ./out && tsc -p ./src/lib",
+    "d": "vite serve .",
+    "df": "vite serve . --force",
+    "debug": "npx --node-arg=--inspect vite serve ."
   },
   "publishConfig": {
     "access": "public"
@@ -16,9 +19,16 @@
   },
   "author": "csr632",
   "license": "ISC",
+  "dependencies": {
+    "@pika/react": "^16.13.1",
+    "@pika/react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0"
+  },
   "devDependencies": {
+    "@types/enhanced-resolve": "^3.0.6",
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
+    "@types/react-router-dom": "^5.1.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "typescript": "^3.9.3",

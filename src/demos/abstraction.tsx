@@ -36,7 +36,7 @@ const StepSvs = createSvs((scope) => {
   };
 });
 
-export default () => {
+export default function Demo() {
   const [scope] = ConfigSvs.useProvideNewScope();
 
   // The user of SumSvs will not feel the existance of StepSvs(abstraction).
@@ -47,7 +47,7 @@ export default () => {
   const stepSvs = scope.useConsumeSvs(StepSvs, true);
   console.log(stepSvs === NOT_FOUND); // true
 
-  return scope.injectTo(
+  return (
     <div>
       <p>
         step: {step}.<button onClick={incremenStep}>increment step</button>
@@ -57,4 +57,4 @@ export default () => {
       </p>
     </div>
   );
-};
+}

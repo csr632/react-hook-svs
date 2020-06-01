@@ -25,7 +25,7 @@ const SumSvs = createSvs((scope, initVal) => {
   };
 });
 
-export default () => {
+export default function Demo() {
   // Service composition is achieved by running two services in same scope. So the latter ones can consume the output of the former ones.
   const [scope, { step, increment }] = StepSvs.useProvideNewScope(1);
   const { sum, add } = scope.useProvideSvs(SumSvs, 0);
@@ -54,7 +54,7 @@ export default () => {
       <Child />
     </div>
   );
-};
+}
 
 const Child: React.FC = () => {
   const { step, increment } = StepSvs.useCtxConsume();
